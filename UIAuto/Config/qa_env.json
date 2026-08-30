@@ -1,0 +1,6 @@
+{
+  "base_url": "https://www.automationexercise.com/",
+  "browser": "chromium",
+  "headless": false,
+  "timeout": 60000
+}

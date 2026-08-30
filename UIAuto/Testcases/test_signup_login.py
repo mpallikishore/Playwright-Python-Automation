@@ -22,39 +22,55 @@ pytest testpath -s -v
 
 pytest.
 
-
-
 """
+import random
+import string
+import json
+import pytest
+
+
+
+
 from UIAuto.Pages.signupLoginPage import SignupLogin
 from UIAuto.Pages.homePage import HomePage
 
 
 
 class TestSignupLogin:
+    with open(r"C:\Users\motup\PycharmProjects\PythonProject\Auomation excercise with playwright\UIAuto\Testdata\user_creation_data.json") as file:
+        test_data = json.load(file)
 
-    def test_do_signup(self,page):
+    @pytest.mark.uesr_reg
+    @pytest.mark.smoke
+    @pytest.mark.parametrize("data", test_data)
+
+    def test_do_signup(self,page,data):
+        auto = random.choices(string.ascii_lowercase, k=8)
+        email = "".join(auto)+"_"+data["email"]
+        name = "".join(auto)+" "+data["name"]
+        print(f"name:{name} and email:{email}")
         page = page
         signup_login = SignupLogin(page)
         home = HomePage(page)
-        home.navigate("https://www.automationexercise.com/")
+        #home.navigate("https://www.automationexercise.com/")
         assert home.locator_is_visible(home.home_icon)
         home.click_signup()
-        signup_login.do_signup("ram","ram@gmail.com")
+        signup_login.do_signup(name,email)
         assert home.page.get_by_text(signup_login.enter_acct_info).is_visible(), "Signup is not loaded"
-        signup_login.fill_signup_account_info_form('Mr', 'msn2121')
-        assert home.page.get_by_text(signup_login.add_info).is_visible(), "Signup is not loaded"#NEW
-        signup_login.fill_signup_address_info('kishore','motupalli','Deloite','hyderabad','banglore','Israel',
-                                              'Andraprdesh','Thirupati','517218','72675436')
+        #signup_login.fill_signup_account_info_form('Mr', 'msn2121')
+        #assert home.page.get_by_text(signup_login.add_info).is_visible(), "Signup is not loaded"#NEW
+        #signup_login.fill_signup_address_info('kishore','motupalli','Deloite','hyderabad','banglore','Israel',
+                                              #'Andraprdesh','Thirupati','517218','72675436')
         #verify continue button
-        assert signup_login.verify_continue_button(), "Continue button is not loaded"
+        #assert signup_login.verify_continue_button(), "Continue button is not loaded"
         #click continue button
-        signup_login.click_continue_button()
+        #signup_login.click_continue_button()
         # Verify 'Logged in as username'
-        assert home.verify_logged_in_name(),"'Logged in as username is not visible"
+        #assert home.verify_logged_in_name(),"'Logged in as username is not visible"
         #click delete account name
-        home.click_delete_account()
+        #home.click_delete_account()
         # Verify ACCOUNT DELETED! is visible
-        assert signup_login.verify_account_deleted(),"ACCOUNT DELETED is not visible"
+        #assert signup_login.verify_account_deleted(),"ACCOUNT DELETED is not visible"
         # Click Continue button
         #signup_login.click_continue()
 

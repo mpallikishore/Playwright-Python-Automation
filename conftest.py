@@ -8,15 +8,21 @@ we want import pytest because we are going to write pytest concepts
 import pytest
 
 from playwright.sync_api import sync_playwright
+from UIAuto.Utils.config_reader import get_config
 
+@pytest.fixture(scope="session")#it will execute once per the session
+def config():
+    return get_config()
 
 @pytest.fixture()#by default scope is function
 
-def browser():
+def browser(config):
     #this is set up
     print("***** browser fixture started *****")
     with sync_playwright() as p:
-        browser =p.chromium.launch(headless=False,slow_mo=10000)
+        browser =p.chromium.launch(
+            headless=config["headless"]
+        )
         yield browser
         #teardown
         browser.close()
@@ -24,10 +30,12 @@ def browser():
 
 
 @pytest.fixture()
-def page(browser):
+def page(browser,config):
     print("***** page started *****")
     context = browser.new_context()
     page = context.new_page()
+    page.set_default_timeout(config["timeout"])
+    page.goto(config["base_url"])
     yield page
     context.close()
     print("***** page ended *****")
