@@ -38,4 +38,19 @@ conftest.py
     package: it will execute only once per the package.
     hooks: 
 parametrization: it is a pytest feature to run a single testcase with multiple test data
-marker: we can use to seggrigate / group the testcases based on the features
+marker: we can use to segregate / group the testcases based on the features
+
+
+How can handle pop-ups and dialogue boxs,
+alerts:
+sometimes we can click any button or link i will show any pop message is called alert
+1)single button-okay,cancel,accept(by using (Accept method) we can click the okay button )
+2)multiple button - yes or no,okay or cacel ,accept or dissmiss
+3)sometimes it will take user input to accept or cancel the alert
+when we want accept then we will use (accept method)
+when we want dismiss then we will use (dismiss method)
+
+In playwright we can handle the popups in two ways
+
+
+
